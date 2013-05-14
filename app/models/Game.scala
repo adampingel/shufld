@@ -20,14 +20,13 @@ case class Game(id: Long, which: String, label: String, lastState: Long) {
 
 object Game {
 
-  val game = {
+  val game =
     get[Long]("id") ~
       get[String]("which") ~
       get[String]("label") ~
       get[Long]("last_state") map {
         case id ~ which ~ label ~ last_state => Game(id, which, label, last_state)
       }
-  }
 
   def all(): List[Game] =
     DB.withConnection { implicit c =>
@@ -51,12 +50,12 @@ object Game {
       }
     })
 
-  def insert(which: String, label: String, last_state: Long) =
+  def insert(which: String, label: String) =
     DB.withConnection { implicit c =>
       SQL("insert into game (which, label, last_state) values ({which}, {label}, {last_state})").on(
         'which -> which,
         'label -> label,
-        'last_state -> last_state
+        'last_state -> 0
       ).executeInsert()
     } map { id =>
       which match {

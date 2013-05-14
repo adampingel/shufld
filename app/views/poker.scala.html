@@ -100,9 +100,7 @@
 
 @nextGameButton(game: Game, pokerGame: Poker) = {
   <div>
-  @form(AxleController.newGame) {
-    <input type="hidden" name="label" value="TODO" />
-    <input type="hidden" name="which" value="poker" />
+  @form(AxleController.continue(game.id)) {
     <input type="submit" value="next game" />
   }
   </div>

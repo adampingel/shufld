@@ -117,12 +117,32 @@ object AxleController extends Controller {
     Ok(views.html.index(Game.all, Forms.createGameForm))
   }
 
+  def continue(id: Long) = Action { implicit request =>
+    Game.find(id).map(game => {
+      val g = game.game.get
+      game.which match {
+        case "poker" => {
+          val pokerGame = g.asInstanceOf[poker.Poker]
+          models.PokerState.find(game.lastState, pokerGame).map { previous =>
+            pokerGame.startFrom(previous).map(continuingState =>
+              models.PokerState.insert(id, pokerGame, continuingState) map { last_state_id =>
+                models.Game.updateState(id, last_state_id)
+              }
+            )
+          }
+        }
+        case _ =>
+      }
+    })
+    Redirect(routes.AxleController.game(id))
+  }
+
   def newGame = Action { implicit request =>
     Forms.createGameForm.bindFromRequest.fold(
       errors => BadRequest(views.html.index(Game.all(), errors)),
       args => {
         val (which, label) = args
-        Game.insert(which, label, 0).map({ id =>
+        Game.insert(which, label).map({ id =>
           Redirect(routes.AxleController.game(id))
         }).getOrElse(
           Redirect(routes.AxleController.games)
