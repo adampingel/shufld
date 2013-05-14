@@ -1,0 +1,31 @@
+@(ttt: Game, state: axle.game.ttt.TicTacToeState)
+
+@import axle.game.ttt._
+
+@boardCell(state: TicTacToeState, r: Int, c: Int) = @{
+  <td><center><h1>{
+    state.board(r, c).map(_.id).getOrElse(
+      <form>
+        <button name="mark" type="submit" value="mark">{state.player.id}</button>
+      </form>
+    )
+  }</h1></center></td>
+}
+
+@main("Tic-Tac-Toe: " + ttt.label) {
+   
+   <center><h2>@ttt.label</h2></center>
+   
+   <center><p>@state.player's move</p></center>
+
+   <center>
+   <table border=1 width=240 height=240>
+   @{(0 until state.board.rows).map(r =>
+     <tr>{
+       (0 until state.board.columns).map(c => boardCell(state, r, c))
+     }</tr>
+   )}
+   </table>
+   </center>
+
+}

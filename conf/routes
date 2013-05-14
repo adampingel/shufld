@@ -1,0 +1,15 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+GET     /                       controllers.AxleController.index
+GET     /login                  controllers.AxleController.login
+GET     /hello                  controllers.AxleController.hello
+GET     /game/:id               controllers.AxleController.game(id: Long)
+POST    /game/:id/move          controllers.AxleController.move(id: Long)
+POST    /game/:id/delete        controllers.AxleController.deleteGame(id: Long)
+GET     /games                  controllers.AxleController.games
+GET     /earthquakes            controllers.AxleController.earthquakes
+POST    /games                  controllers.AxleController.newGame
+POST    /openIdCallback         controllers.AxleController.openIDCallback
+GET     /assets/*file           controllers.Assets.at(path="/public", file)

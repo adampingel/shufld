@@ -1,0 +1,12 @@
+@(feed: play.api.libs.json.JsValue)
+
+@import play.api.libs.json._
+
+@main("Earthquakes") {
+
+   <h1>Earthquakes</h1>
+   
+   <ul>
+     @{(feed \ "earthquakes")}
+   </ul>
+}

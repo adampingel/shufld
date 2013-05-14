@@ -1,0 +1,142 @@
+@(game: Game, pokerGame: axle.game.poker.Poker, state: axle.game.poker.PokerState, moveForm: Form[(String, Option[Int])])
+
+@import axle.game.poker._
+@import axle.game.cards._
+@import helper._
+@import routes.AxleController
+
+@visibleCard(card: Card) = @{
+  <div class="cardface"><center>{
+    card.suit match {
+      case Hearts | Diamonds => <span><font color="red">{card.rank}<br/>{card.suit}</font></span>
+      case _ => <span>{card.rank}<br/>{card.suit}</span>
+    }
+  }</center></div>
+}
+
+@hiddenCard(card: Card) = @{
+  <div class="cardback">
+    <center><img src="/assets/images/bicyclebacksmall.jpg"/></center>
+  </div>
+}
+
+@showCard(card: Card, visible: Boolean) = @{
+  if( visible ) {
+    visibleCard(card)
+  } else {
+    hiddenCard(card)
+  }
+}
+
+@sharedCards(state: PokerState) = {
+  <table>
+    <tr>
+    @{state.shared.zipWithIndex.map({ case (card: Card, i: Int) => <td>{showCard(card, i < state.numShown)}</td> })}
+    </tr>
+  </table>
+}
+
+@amtOption(i: Int) = {
+  <option value=@{i}>@{i}</option>
+}
+
+@options(n: Int) = @{
+  for (i <- 1 to n) yield amtOption(i)
+}
+
+@playerButtons(game: Game, state: PokerState) = {
+  @form(routes.AxleController.move(game.id)) {
+    <select name="which" size=3>
+      <option value="call">Call</option>
+      <option value="fold">Fold</option>
+      <option value="raise">Raise</option>
+    </select>
+    <select name="amount">
+      @options(state.piles(state.player) - state.currentBet)
+    </select>
+    <input type="submit" value="submit" />
+  }
+}
+
+@playerRow(player: PokerPlayer, state: PokerState) = {
+  <tr>
+  
+    <td>@{
+      if( state.outcome.isDefined && (state.outcome.get.winner equals player) ) {
+        state.outcome.get.hand.map(_.description).getOrElse("no hand")
+      } else if(state.player equals player) {
+        "$" + state.currentBet + " bet to"
+      } else ""
+    }</td>
+  
+    <td>@player.description</td>
+    
+    <td><table><tr>@{
+      state.hands.get(player).map(hand => hand.map(card =>
+        <td>{showCard(card, state.player == player || (state.outcome.isDefined && state.stillIn.size > 1))}</td>
+      )).getOrElse("-")
+    }</tr></table></td>
+    
+    <td>@{
+      if(state.stillIn.contains(player))
+        (state.inFors.get(player).map(i => "$" + i).getOrElse(""))
+      else
+        "out"
+    }</td>
+    
+    <td>@{"$" + state.piles.get(player).map(_.toString).getOrElse("--")}</td>
+   
+    <td>@{ if(state.player equals player) playerButtons(game, state) }</td>
+    
+  </tr>
+}
+
+@dealerButton(game: Game) = {
+  @form(routes.AxleController.move(game.id)) {
+    <input type="hidden" name="which" value="deal"/>
+    <input type="submit" value="Deal" />
+  }
+}
+
+@nextGameButton(game: Game, pokerGame: Poker) = {
+  <div>
+  @form(AxleController.newGame) {
+    <input type="hidden" name="label" value="TODO" />
+    <input type="hidden" name="which" value="poker" />
+    <input type="submit" value="next game" />
+  }
+  </div>
+}
+
+@main("Poker: " + game.label) {
+
+  <center>
+  
+  <h2>@game.label</h2>
+
+  @sharedCards(state)
+
+  @defining(state._eventQueues.get(state.player).getOrElse(Nil)) { events =>
+    @{if( events.size > 0 ) {
+      "Previously: " + events.map(_.displayTo(state.player)).mkString(" ")
+    }}
+  }
+
+  <table>
+    <tr><td></td><td></td><td></td><td>In for</td><td>Pile</td><td></td></tr>
+    @{pokerGame.players.map(playerRow(_, state))}
+    <tr><td></td><td></td><td></td><td>$@state.pot pot</td><td></td><td></td></tr>
+  </table>
+
+  <div>@{
+  if( state.outcome.isDefined ) {
+    nextGameButton(game, pokerGame)
+  } else if(state.player equals pokerGame.dealer)
+    dealerButton(game)
+  }
+  </div>
+
+  <a href=@routes.AxleController.games>all games</a>
+  </center>
+
+}
