@@ -1,6 +1,6 @@
 
 body {
- background:white;
+ background:green;
  font-family:"Futura",Georgia,Sans-Serif;
 }
 
@@ -30,6 +30,7 @@ div.cardface {
   border:2px solid;
   border-color: blue;
   border-radius: 5px;
+  background-color: white;
 }
 
 div.cardback {
