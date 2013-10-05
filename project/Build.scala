@@ -11,7 +11,7 @@ object ApplicationBuild extends Build {
     // Add your project dependencies here,
     jdbc,
     anorm,
-    "se.radley" %% "play-plugins-salat" % "1.2",
+    "se.radley" %% "play-plugins-salat" % "1.3.0",
     "org.pingel" %% "axle-core" % "0.1-SNAPSHOT",
     "org.pingel" %% "axle-games" % "0.1-SNAPSHOT",
     "mysql" % "mysql-connector-java" % "5.1.24",
