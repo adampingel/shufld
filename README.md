@@ -10,24 +10,48 @@ Run with:
 Setup
 =====
 
+EC2 Instance
+------------
+
+Alestic Ubuntu AMI
+
+```bash
+sudo su -
+apg-get mysql-server unzip openjdk-7-jre emacs
+a2enmod proxy_http
+service apache2 restart
+emacs /etc/apache2/sites-available/shufld
+a2ensite shufld
+service apache2 reload
+```
+
 MySQL
 -----
 
 Server
 
-  cd /usr/local/mysql/bin
-  sudo su - mysql ./mysqld
+cd /usr/local/mysql/bin
+sudo su - mysql ./mysqld
 
-Client
+### Client
 
-  mysql -u root -p --default-character-set=utf8
+```bash
+mysql -u root -p --default-character-set=utf8
+```
 
-Schema
+### Schema
 
-  See 1.sql for create table scripts.
+```sql
+create user 'gameweb' identified by 'gameweb';
+create database 'gameweb';
+grant all on gameweb.* to 'gameweb';
+use gameweb;
+```
 
-  create user 'gameweb' identified by 'gameweb';
-  grant all on gameweb.* to 'gameweb';
+See 1.sql for create table scripts.
+
+Obsolete
+========
 
 Zookeeper
 ---------
