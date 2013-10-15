@@ -42,10 +42,10 @@ mysql -u root -p --default-character-set=utf8
 ### Schema
 
 ```sql
-create user 'gameweb' identified by 'gameweb';
-create database 'gameweb';
-grant all on gameweb.* to 'gameweb';
-use gameweb;
+create user 'shufld' identified by 'shufld';
+create database 'shufld';
+grant all on shufld.* to 'shufld';
+use shufld;
 ```
 
 See 1.sql for create table scripts.
