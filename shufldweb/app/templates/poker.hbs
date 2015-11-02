@@ -1,0 +1,24 @@
+{{outlet}}
+
+visibleCard(card: Card) =
+  <div class="cardface"><center>
+    card.suit match 
+      case Hearts | Diamonds => <span><font color="red"> card.rank <br/> card.suit </font></span>
+      case _ => <span>{card.rank}<br/> card.suit </span>
+  </center></div>
+
+hiddenCard(card: Card) =
+  <div class="cardback">
+    <center><img src="/assets/images/bicyclebacksmall.jpg"/></center>
+  </div>
+
+showCard(card: Card, visible: Boolean) =
+  if( visible ) visibleCard(card) else hiddenCard(card)
+
+sharedCards(state: PokerState) =
+  <table>
+    <tr>
+    state.shared.zipWithIndex.map case (card: Card, i: Int) =>
+      <td> showCard(card, i lessthan state.numShown) </td>
+    </tr>
+  </table>

@@ -7,6 +7,8 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('users');
+  this.route('poker');
+  this.route('ttt');
 });
 
 export default Router;

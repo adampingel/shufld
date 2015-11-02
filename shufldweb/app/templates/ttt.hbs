@@ -1,6 +1,4 @@
-@(ttt: Game, state: axle.game.ttt.TicTacToeState)
-
-@import axle.game.ttt._
+{{outlet}}
 
 @boardCell(state: TicTacToeState, r: Int, c: Int) = @{
   <td><center><h1>{
@@ -20,11 +18,11 @@
 
    <center>
    <table border=1 width=240 height=240>
-   @{(0 until state.board.rows).map(r =>
-     <tr>{
+   (0 until state.board.rows).map(r =>
+     <tr>
        (0 until state.board.columns).map(c => boardCell(state, r, c))
-     }</tr>
-   )}
+     </tr>
+   )
    </table>
    </center>
 
