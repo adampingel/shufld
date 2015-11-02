@@ -1,0 +1,13 @@
+
+<!-- showCard(card: Card, visible: Boolean) -->
+
+if( visible )
+  <div class="cardface"><center>
+    card.suit match 
+      case Hearts | Diamonds => <span><font color="red"> {{card.rank}} <br/> {{card.suit}} </font></span>
+      case _ => <span>{{card.rank}}<br/> {{card.suit}} </span>
+  </center></div>
+else
+  <div class="cardback">
+    <center><img src="/images/bicyclebacksmall.jpg"/></center>
+  </div>
