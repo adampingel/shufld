@@ -1,13 +1,15 @@
+<!-- args: (card: Card, visible: Boolean) -->
 
-<!-- showCard(card: Card, visible: Boolean) -->
-
-if( visible )
+{{#if visibility }}
   <div class="cardface"><center>
-    card.suit match 
-      case Hearts | Diamonds => <span><font color="red"> {{card.rank}} <br/> {{card.suit}} </font></span>
-      case _ => <span>{{card.rank}}<br/> {{card.suit}} </span>
+    {{#if false }} <!-- card.suit == "Hearts" or Diamonds -->
+      <span><font color="red"> {{card.rank}} <br/> {{card.suit}} </font></span>
+    {{else}}
+      <span>{{card.rank}}<br/> {{card.suit}} </span>
+    {{/if}}
   </center></div>
-else
+{{else}}
   <div class="cardback">
     <center><img src="/images/bicyclebacksmall.jpg"/></center>
   </div>
+{{/if}}

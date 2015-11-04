@@ -1,43 +1,47 @@
 {{outlet}}
 
-"Poker: " + game.label
+TODO Title: {{model.game.label}}
 
 <center>
   
   <h2>{{model.game.label}}</h2>
 
-  <!-- shared cards -->
   <table>
     <tr>
-    state.shared.zipWithIndex.map case (card: Card, i: Int) =>
-      visible = lessthan state.numShown
-      <td>{{show-card card i visible}}</td>
+      {{#each model.sharedWithVisibility as |cv|}}
+        <td>{{show-card card=cv.[0] visibility=cv.[1]}}</td>
+      {{/each}}
     </tr>
   </table>
 
+  <!--
   defining(state._eventQueues.get(state.player).getOrElse(Nil)) { events =>
     if( events.size > 0 )
       "Previously: " + events.map(_.displayTo(state.player)).mkString(" ")
   }
+  -->
 
   <table>
     <tr><td></td><td></td><td></td><td>In for</td><td>Pile</td><td></td></tr>
-    pokerGame.players.map(playerRow(_, state))
-    <tr><td></td><td></td><td></td><td>{{state.pot}} pot</td><td></td><td></td></tr>
+    {{#each model.game.players as |player|}}
+      {{poker-player-row player state}}
+    {{/each}}
+    <tr><td></td><td></td><td></td><td>{{model.state.pot}} pot</td><td></td><td></td></tr>
   </table>
 
   <div>
-  if( state.outcome.isDefined )
+  {{#if false}} <!-- state.hasOwnProperty('outcome') -->
     <div>
-    <form> <!-- continue(game.id) -->
-      <input type="submit" value="next game" />
-    </form>
+      <form> <!-- continue(game.id) -->
+        <input type="submit" value="next game" />
+      </form>
     </div>
-  else if(state.player equals pokerGame.dealer)
+  {{else if false}} <!-- state.player === pokerGame.dealer -->
     <form> <!-- move(game.id) -->
       <input type="hidden" name="which" value="deal"/>
       <input type="submit" value="Deal" />
     </form>
+  {{/if}}
   </div>
 
   <a href="/games">all games</a>
