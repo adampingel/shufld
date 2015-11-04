@@ -5,7 +5,7 @@
       hand description
       <!-- state.outcome.get.hand.map(_.description).getOrElse("no hand") -->
     {{else if false}} <!-- state.player equals player -->
-      "$" + state.currentBet + " bet to"
+      ${{state.currentBet}} bet to
     {{/if}}
   </td>
   <td>{{player.description}}</td>

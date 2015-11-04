@@ -15,6 +15,7 @@ export default Ember.Route.extend({
       state: {
       	pot: 10,
       	outcome: {},
+      	currentBet: 3,
       	shared: [
           {suit: "H", rank: "4"},
           {suit: "H", rank: "5"},
